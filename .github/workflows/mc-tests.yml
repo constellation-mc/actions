@@ -15,6 +15,7 @@ on:
 
 jobs:
   client_test:
+    name: Client Test
     if: ${{ inputs.client_task != '' }}
     runs-on: ubuntu-latest
     steps:
@@ -42,6 +43,7 @@ jobs:
           path: run/screenshots
 
   server_test:
+    name: Server Test
     if: ${{ inputs.server_task != '' }}
     runs-on: ubuntu-latest
     steps:

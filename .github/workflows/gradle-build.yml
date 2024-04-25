@@ -20,6 +20,7 @@ on:
 
 jobs:
   build:
+    name: ${{ inputs.gradle_tasks }} build
     runs-on: ubuntu-latest
     steps:
       - name: checkout repository
@@ -46,7 +47,7 @@ jobs:
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: ${{ inputs.gradle_tasks }}
+      - name: ${{ inputs.gradle_tasks }} build
         run: |
           ./gradlew ${{ inputs.gradle_tasks }} build
 
