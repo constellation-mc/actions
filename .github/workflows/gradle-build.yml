@@ -12,7 +12,7 @@ on:
 
       gradle_tasks:
         type: string
-        required: true
+        required: false
 
       reviewdog:
         type: string
