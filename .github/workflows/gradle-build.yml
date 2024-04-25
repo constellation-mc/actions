@@ -1,0 +1,60 @@
+name: build
+on:
+  workflow_call:
+    inputs:
+      java:
+        type: string
+        required: true
+      cache:
+        type: boolean
+        default: true
+        required: false
+
+      gradle_tasks:
+        type: string
+        required: true
+
+      reviewdog:
+        type: string
+        required: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 2
+      - name: validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v2.1.1
+
+      - name: setup jdk ${{ inputs.java }} with cache
+        if: ${{ inputs.cache }}
+        uses: actions/setup-java@v4.1.0
+        with:
+          distribution: "microsoft"
+          java-version: ${{ inputs.java }}
+          cache: gradle
+      - name: setup jdk ${{ inputs.java }}
+        if: ${{ !inputs.cache }}
+        uses: actions/setup-java@v4.1.0
+        with:
+          distribution: "microsoft"
+          java-version: ${{ inputs.java }}
+
+      - name: make gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: ${{ inputs.gradle_tasks }}
+        run: |
+          ./gradlew ${{ inputs.gradle_tasks }} build
+
+      - name: set up reviewdog
+        if: ${{ inputs.reviewdog != '' }}
+        uses: reviewdog/action-setup@v1
+      - name: upload spotbugs sarif report
+        if: ${{ inputs.reviewdog != '' }}
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ${{ inputs.reviewdog }}

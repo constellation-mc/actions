@@ -1,0 +1,62 @@
+name: run mc tests
+on:
+  workflow_call:
+    inputs:
+      java:
+        type: string
+        required: true
+
+      client_task:
+        type: string
+        required: false
+      server_task:
+        type: string
+        required: false
+
+jobs:
+  client_test:
+    if: ${{ inputs.client_task != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4.1.1
+      - name: validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v2.1.1
+
+      - name: setup jdk ${{ inputs.java }}
+        uses: actions/setup-java@v4.1.0
+        with:
+          distribution: "microsoft"
+          java-version: ${{ inputs.java }}
+
+      - name: make gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: run testmod
+        uses: modmuss50/xvfb-action@v1
+        with:
+          run: ./gradlew ${{ inputs.client_task }} --stacktrace --warning-mode=fail
+      - uses: actions/upload-artifact@v4.3.1
+        with:
+          name: Test Screenshots
+          path: run/screenshots
+
+  server_test:
+    if: ${{ inputs.server_task != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4.1.1
+      - name: validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v2.1.1
+
+      - name: setup jdk ${{ inputs.java }}
+        uses: actions/setup-java@v4.1.0
+        with:
+          distribution: "microsoft"
+          java-version: ${{ inputs.java }}
+
+      - name: make gradle wrapper executable
+        run: chmod +x ./gradlew
+      - name: run testmod
+        run: ./gradlew ${{ inputs.server_task }} --stacktrace --warning-mode=fail
