@@ -17,9 +17,9 @@ on:
 
     secrets:
       MODRINTH_TOKEN:
-        required: true
+        required: false
       CURSEFORGE_TOKEN:
-        required: true
+        required: false
 
 jobs:
   build:
@@ -34,7 +34,7 @@ jobs:
           fetch-depth: 2
       - name: Validate gradle wrapper
         uses: gradle/wrapper-validation-action@v2.1.1
-        
+
       - name: setup jdk ${{ inputs.java }}
         uses: actions/setup-java@v4.1.0
         with:
@@ -54,6 +54,8 @@ jobs:
         if: ${{ inputs.version_type != 'NONE' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           GITHUB_SHA: ${{ github.sha }}
           VERSION_TYPE: ${{ inputs.version_type }}
         run: |
