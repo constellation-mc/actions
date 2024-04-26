@@ -19,21 +19,21 @@ jobs:
     if: ${{ inputs.client_task != '' }}
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4.1.1
-      - name: validate gradle wrapper
+      - name: Validate gradle wrapper
         uses: gradle/wrapper-validation-action@v2.1.1
 
-      - name: setup jdk ${{ inputs.java }}
+      - name: Setup JDK ${{ inputs.java }}
         uses: actions/setup-java@v4.1.0
         with:
           distribution: "microsoft"
           java-version: ${{ inputs.java }}
 
-      - name: make gradle wrapper executable
+      - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: run testmod
+      - name: Run testmod
         uses: modmuss50/xvfb-action@v1
         with:
           run: ./gradlew ${{ inputs.client_task }} --stacktrace --warning-mode=fail
@@ -47,18 +47,18 @@ jobs:
     if: ${{ inputs.server_task != '' }}
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4.1.1
       - name: validate gradle wrapper
         uses: gradle/wrapper-validation-action@v2.1.1
 
-      - name: setup jdk ${{ inputs.java }}
+      - name: Setup JDK ${{ inputs.java }}
         uses: actions/setup-java@v4.1.0
         with:
           distribution: "microsoft"
           java-version: ${{ inputs.java }}
 
-      - name: make gradle wrapper executable
+      - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
-      - name: run testmod
+      - name: Run testmod
         run: ./gradlew ${{ inputs.server_task }} --stacktrace --warning-mode=fail

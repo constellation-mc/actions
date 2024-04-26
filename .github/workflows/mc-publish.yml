@@ -1,0 +1,61 @@
+name: publish
+on:
+  workflow_call:
+    inputs:
+      java:
+        type: string
+        required: true
+
+      version_type:
+        type: string
+        required: true
+
+      publish_task:
+        type: string
+        default: publishMods
+        required: false
+
+    secrets:
+      MODRINTH_TOKEN:
+        required: true
+      CURSEFORGE_TOKEN:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version_info: ${{ steps.get_version.outputs.version_info }}
+      version_plain: ${{ steps.get_version.outputs.version_plain }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 2
+      - name: Validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v2.1.1
+        
+      - name: setup jdk ${{ inputs.java }}
+        uses: actions/setup-java@v4.1.0
+        with:
+          distribution: "microsoft"
+          java-version: ${{ inputs.java }}
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Publish to Maven
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ./gradlew publish
+
+      - name: Publish mods
+        if: ${{ inputs.version_type != 'NONE' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_SHA: ${{ github.sha }}
+          VERSION_TYPE: ${{ inputs.version_type }}
+        run: |
+          ./gradlew ${{ inputs.publish_task }}
+    
