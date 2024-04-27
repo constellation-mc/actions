@@ -28,7 +28,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Validate gradle wrapper
-        uses: gradle/wrapper-validation-action@v2.1.1
+        uses: gradle/wrapper-validation-action@v3.3.2
 
       - name: Setup JDK ${{ inputs.java }} with cache
         if: ${{ inputs.cache }}
