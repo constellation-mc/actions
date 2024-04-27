@@ -16,7 +16,7 @@ on:
 jobs:
   client_test:
     name: Client Test
-    if: ${{ inputs.client_task != '' }}
+    if: ${{ inputs.client_task != '' && !contains(github.event.head_commit.message, '[ci skip test]') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -44,7 +44,7 @@ jobs:
 
   server_test:
     name: Server Test
-    if: ${{ inputs.server_task != '' }}
+    if: ${{ inputs.server_task != '' && !contains(github.event.head_commit.message, '[ci skip test]') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
