@@ -50,7 +50,13 @@ jobs:
 
       - name: ${{ inputs.gradle_tasks }} build
         run: |
-          ./gradlew ${{ inputs.gradle_tasks }} build
+          ./gradlew ${{ inputs.gradle_tasks }} build publishToMavenLocal
+
+      - name: capture build artifacts
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: Artifacts
+          path: ~/.m2/repository/
 
       - name: Set up reviewdog
         if: ${{ inputs.reviewdog != '' }}
