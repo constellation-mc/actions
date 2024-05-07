@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@v4.1.5
       - name: Validate gradle wrapper
         uses: gradle/actions/wrapper-validation@v3.3.2
 
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@v4.1.5
       - name: validate gradle wrapper
         uses: gradle/actions/wrapper-validation@v3.3.2
 
