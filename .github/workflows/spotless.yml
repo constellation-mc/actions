@@ -1,0 +1,39 @@
+
+name: apply spotless
+on:
+  workflow_call:
+    inputs:
+      java:
+        type: string
+        required: true
+
+jobs:
+  spotless:
+    if: ${{ !contains(github.event.head_commit.message, '[ci skip spotless]') }}
+    name: Apply Spotless
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
+        with:
+          fetch-depth: 2
+      - name: Validate gradle wrapper
+        uses: gradle/actions/wrapper-validation@v3.5.0
+
+      - name: Setup JDK ${{ inputs.java }}
+        uses: actions/setup-java@v4.2.1
+        with:
+          distribution: "microsoft"
+          java-version: ${{ inputs.java }}
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: apply spotless
+        run: |
+          ./gradlew spotlessApply
+      
+      - name: commit
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Apply Spotless
