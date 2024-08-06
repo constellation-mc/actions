@@ -20,7 +20,7 @@ on:
 jobs:
   client_test:
     name: Client Test
-    if: ${{ inputs.client_task != '' && !contains(github.event.head_commit.message, '[ci skip test]') }}
+    if: ${{ inputs.client_task != '' && !contains(github.event.head_commit.message, '[ci skip test]') && github.event.sender.login != 'constellation-manager[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -56,7 +56,7 @@ jobs:
 
   server_test:
     name: Server Test
-    if: ${{ inputs.server_task != '' && !contains(github.event.head_commit.message, '[ci skip test]') }}
+    if: ${{ inputs.server_task != '' && !contains(github.event.head_commit.message, '[ci skip test]') && github.event.sender.login != 'constellation-manager[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
