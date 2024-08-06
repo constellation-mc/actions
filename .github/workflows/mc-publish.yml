@@ -50,10 +50,16 @@ jobs:
         run: |
           ./gradlew publish
 
+      - uses: actions/create-github-app-token@v1.10.3
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_APP_KEY }}
+
       - name: Publish mods
         if: ${{ inputs.version_type != 'NONE' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           GITHUB_SHA: ${{ github.sha }}
