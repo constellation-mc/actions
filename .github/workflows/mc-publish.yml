@@ -41,8 +41,10 @@ jobs:
           distribution: "microsoft"
           java-version: ${{ inputs.java }}
 
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          cache-disabled: true
 
       - name: Publish to Maven
         env:
@@ -66,4 +68,3 @@ jobs:
           VERSION_TYPE: ${{ inputs.version_type }}
         run: |
           ./gradlew ${{ inputs.publish_task }}
-    

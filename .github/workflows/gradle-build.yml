@@ -31,22 +31,16 @@ jobs:
       - name: Validate gradle wrapper
         uses: gradle/actions/wrapper-validation@v5.0.0
 
-      - name: Setup JDK ${{ inputs.java }} with cache
-        if: ${{ inputs.cache }}
-        uses: actions/setup-java@v4.4.0
-        with:
-          distribution: "microsoft"
-          java-version: ${{ inputs.java }}
-          cache: gradle
       - name: Setup JDK ${{ inputs.java }}
-        if: ${{ !inputs.cache }}
         uses: actions/setup-java@v4.4.0
         with:
           distribution: "microsoft"
           java-version: ${{ inputs.java }}
 
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          cache-disabled: ${{ !inputs.cache }}
 
       - name: ${{ inputs.gradle_tasks }} build
         run: |
