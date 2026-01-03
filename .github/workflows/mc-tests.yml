@@ -43,7 +43,7 @@ jobs:
         uses: modmuss50/xvfb-action@v1
         with:
           run: ./gradlew ${{ inputs.client_task }} --stacktrace --warning-mode=fail
-      - uses: actions/upload-artifact@v5.0.0
+      - uses: actions/upload-artifact@v6.0.0
         with:
           name: Test Screenshots
           path: run/screenshots
