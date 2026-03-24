@@ -26,7 +26,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6.0.1
       - name: Validate gradle wrapper
-        uses: gradle/actions/wrapper-validation@v5.0.0
+        uses: gradle/actions/wrapper-validation@v6
 
       - name: Setup JDK ${{ inputs.java }}
         uses: actions/setup-java@v5.1.0
@@ -35,7 +35,7 @@ jobs:
           java-version: ${{ inputs.java }}
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
         with:
           cache-disabled: ${{ !inputs.cache }}
 
@@ -56,7 +56,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6.0.1
       - name: validate gradle wrapper
-        uses: gradle/actions/wrapper-validation@v5.0.0
+        uses: gradle/actions/wrapper-validation@v6
 
       - name: Setup JDK ${{ inputs.java }}
         uses: actions/setup-java@v5.1.0
@@ -65,7 +65,7 @@ jobs:
           java-version: ${{ inputs.java }}
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
         with:
           cache-disabled: ${{ !inputs.cache }}
 
