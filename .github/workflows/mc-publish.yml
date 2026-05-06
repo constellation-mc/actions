@@ -49,6 +49,9 @@ jobs:
       - name: Publish to Maven
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SIGNING_PGP_KEY_ID: ${{ secrets.SIGNING_PGP_KEY_ID }}
+          SIGNING_PGP_KEY: ${{ secrets.SIGNING_PGP_KEY }}
+          SIGNING_PGP_PASSWORD: ${{ secrets.SIGNING_PGP_PASSWORD }}
         run: |
           ./gradlew publish
 
@@ -64,6 +67,9 @@ jobs:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          SIGNING_PGP_KEY_ID: ${{ secrets.SIGNING_PGP_KEY_ID }}
+          SIGNING_PGP_KEY: ${{ secrets.SIGNING_PGP_KEY }}
+          SIGNING_PGP_PASSWORD: ${{ secrets.SIGNING_PGP_PASSWORD }}
           GITHUB_SHA: ${{ github.sha }}
           VERSION_TYPE: ${{ inputs.version_type }}
         run: |
