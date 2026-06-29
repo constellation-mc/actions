@@ -37,10 +37,27 @@ jobs:
           distribution: "microsoft"
           java-version: ${{ inputs.java }}
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
+      - name: Cache Wrapper
+        if: ${{ inputs.cache == true }}
+        uses: actions/cache@v6
         with:
-          cache-disabled: ${{ !inputs.cache }}
+          path: ~/.gradle/wrapper
+          key: gradle-wrapper-${{ hashFiles('**/gradle-wrapper.properties') }}
+
+      - name: Cache Dependencies
+        if: ${{ inputs.cache == true }}
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches/jars-*/
+            ~/.gradle/caches/*/groovy-dsl/
+            ~/.gradle/caches/transforms-*/
+            ~/.gradle/caches/*/transforms/
+            ~/.gradle/caches/modules-*/
+            ~/.gradle/caches/fabric-loom/
+            ~/.gradle/caches/neoformruntime/
+            ~/.gradle/caches/VanillaGradle/
+          key: gradle-deps-${{ hashFiles('**/gradle-wrapper.properties', '**/gradle.properties', '**/*.versions.toml', 'buildSrc/**/Versions.kt', 'buildSrc/**/Dependencies.kt', '**/versions.properties', '**/*.gradle*') }}
 
       - name: ${{ inputs.gradle_tasks }} build
         run: |
