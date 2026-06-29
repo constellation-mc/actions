@@ -5,6 +5,10 @@ on:
       java:
         type: string
         required: true
+      cache:
+        type: boolean
+        default: true
+        required: false
 
       version_type:
         type: string
@@ -44,7 +48,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
         with:
-          cache-disabled: true
+          cache-disabled: ${{ !inputs.cache }}
 
       - name: Publish to Maven
         env:
