@@ -33,7 +33,7 @@ jobs:
       version_plain: ${{ steps.get_version.outputs.version_plain }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7.0.0
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 2
       - name: Validate gradle wrapper
